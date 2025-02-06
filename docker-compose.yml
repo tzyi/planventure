@@ -2,11 +2,14 @@ version: '3.8'
 
 services:
   backend:
+    volumes:
+      - ./planventure-api:/app
     build:
       context: ./planventure-api
       dockerfile: Dockerfile
     ports:
       - "5000:5000"
     environment:
+      - FLASK_APP=app.py
       - FLASK_ENV=development
       - DATABASE_URL=sqlite:///planventure.db

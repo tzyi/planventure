@@ -7,7 +7,7 @@
   "customizations": {
     "codespaces": {
       "openFiles": [
-        "/planventure-api/app.py"
+        "app.py"
       ]
     },
     "vscode": {
@@ -31,5 +31,11 @@
     }
   },
   "postCreateCommand": "pip install -r requirements.txt",
-  "forwardPorts": [5000]
+  "forwardPorts": [5000],
+  "portsAttributes": {
+    "5000": {
+      "label": "Flask API",
+      "onAutoForward": "notify"
+    }
+  }
 }
