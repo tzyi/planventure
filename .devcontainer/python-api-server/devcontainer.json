@@ -1,0 +1,35 @@
+{
+  "name": "Planventure Backend",
+  "dockerComposeFile": ["../../docker-compose.yml"],
+  "service": "backend",
+  "shutdownAction": "none",
+  "workspaceFolder": "/app",
+  "customizations": {
+    "codespaces": {
+      "openFiles": [
+        "/planventure-api/app.py"
+      ]
+    },
+    "vscode": {
+      "extensions": [
+        "ms-python.python",
+        "esbenp.prettier-vscode",
+        "qwtel.sqlite-viewer",
+        "GitHub.copilot",
+        "GitHub.codespaces",
+        "GitHub.copilot-chat"
+      ],
+      "settings": {
+        "python.pythonPath": "/usr/local/bin/python",
+        "editor.formatOnSave": true,
+        "workbench.colorCustomizations": {
+          "activityBar.background": "#2b0935",
+          "titleBar.activeBackground": "#3d0d4a",
+          "titleBar.activeForeground": "#F3FDF6"
+        }
+      }
+    }
+  },
+  "postCreateCommand": "pip install -r requirements.txt",
+  "forwardPorts": [5000]
+}
