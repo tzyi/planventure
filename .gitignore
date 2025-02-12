@@ -1,3 +1,4 @@
 .vscode
 # Bruno adds a dir to your vscode workspace
 Planventure
+venv/
