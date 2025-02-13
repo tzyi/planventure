@@ -5,6 +5,7 @@ from flask_jwt_extended import JWTManager
 from os import environ
 from dotenv import load_dotenv
 from datetime import timedelta
+from config import Config
 
 # Load environment variables
 load_dotenv()
@@ -14,7 +15,15 @@ db = SQLAlchemy()
 
 def create_app():
     app = Flask(__name__)
-    CORS(app)
+    
+    # Configure CORS
+    CORS(app, 
+         resources={r"/*": {
+             "origins": Config.CORS_ORIGINS,
+             "methods": Config.CORS_METHODS,
+             "allow_headers": Config.CORS_HEADERS,
+             "supports_credentials": Config.CORS_SUPPORTS_CREDENTIALS
+         }})
 
     # JWT Configuration
     app.config['JWT_SECRET_KEY'] = environ.get('JWT_SECRET_KEY', 'your-secret-key')

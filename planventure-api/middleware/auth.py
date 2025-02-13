@@ -7,7 +7,7 @@ def auth_middleware(f):
     @wraps(f)
     def decorated(*args, **kwargs):
         try:
-            verify_jwt_in_request(optional=True)
+            verify_jwt_in_request()
             current_user_id = get_jwt_identity()
             
             # Check if user still exists in database
