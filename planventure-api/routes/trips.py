@@ -1,5 +1,7 @@
-from flask import Blueprint, request, jsonify, current_app
+from flask import Blueprint, request, jsonify, current_app, make_response
 from flask_jwt_extended import get_jwt_identity, verify_jwt_in_request
+from flask_cors import cross_origin
+from Config import Config
 from app import db
 from models import Trip
 from middleware.auth import auth_middleware
@@ -17,9 +19,22 @@ def validate_auth_header():
         return False, 'Invalid authorization format. Use Bearer token'
     return True, None
 
-@trips_bp.route('/trips', methods=['GET', 'POST'])
+@trips_bp.route('/trips', methods=['GET', 'POST', 'OPTIONS'])
+@cross_origin(
+    origins=Config.CORS_ORIGINS,
+    methods=Config.CORS_METHODS,
+    allow_headers=Config.CORS_HEADERS,
+    supports_credentials=Config.CORS_SUPPORTS_CREDENTIALS
+)
 @auth_middleware
 def handle_trips():
+    # Handle preflight OPTIONS request
+    if request.method == 'OPTIONS':
+        response = make_response()
+        response.headers.add('Access-Control-Allow-Methods', ','.join(Config.CORS_METHODS))
+        response.headers.add('Access-Control-Allow-Headers', ','.join(Config.CORS_HEADERS))
+        return response
+    
     try:
         # Log incoming request details
         token = request.headers.get('Authorization', '').replace('Bearer ', '')
@@ -96,9 +111,21 @@ def get_trips():
         } for trip in trips]
     }), 200
 
-@trips_bp.route('/trips/<int:trip_id>', methods=['GET', 'PUT', 'DELETE'])
+@trips_bp.route('/trips/<int:trip_id>', methods=['GET', 'PUT', 'DELETE', 'OPTIONS'])
+@cross_origin(
+    origins=Config.CORS_ORIGINS, 
+    methods=Config.CORS_METHODS,
+    allow_headers=Config.CORS_HEADERS,
+    supports_credentials=Config.CORS_SUPPORTS_CREDENTIALS
+)
 @auth_middleware
 def handle_trip(trip_id):
+    if request.method == 'OPTIONS':
+        response = make_response()
+        response.headers.add('Access-Control-Allow-Methods', ','.join(Config.CORS_METHODS))
+        response.headers.add('Access-Control-Allow-Headers', ','.join(Config.CORS_HEADERS)) 
+        return response
+    
     if request.method == 'GET':
         return get_trip(trip_id)
     elif request.method == 'PUT':
