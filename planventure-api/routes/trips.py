@@ -1,7 +1,7 @@
 from flask import Blueprint, request, jsonify, current_app, make_response
 from flask_jwt_extended import get_jwt_identity, verify_jwt_in_request
 from flask_cors import cross_origin
-from Config import Config
+from config import Config
 from app import db
 from models import Trip
 from middleware.auth import auth_middleware
