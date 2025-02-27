@@ -1,4 +1,4 @@
-import { AppBar, Box, Toolbar, Typography, Button } from '@mui/material';
+import { AppBar, Box, Toolbar, Typography, Button, Stack } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 
 const Navbar = () => {
@@ -15,11 +15,19 @@ const Navbar = () => {
         >
           Planventure
         </Typography>
-        <Box>
+        <Stack direction="row" spacing={2}>
           <Button color="inherit" onClick={() => navigate('/login')}>
             Login
           </Button>
-        </Box>
+          <Button 
+            color="inherit" 
+            variant="outlined" 
+            onClick={() => navigate('/signup')}
+            sx={{ borderColor: 'inherit' }}
+          >
+            Sign Up
+          </Button>
+        </Stack>
       </Toolbar>
     </AppBar>
   );

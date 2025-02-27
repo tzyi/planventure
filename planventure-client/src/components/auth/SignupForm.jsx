@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { 
   Box, 
   TextField, 
@@ -11,21 +11,23 @@ import {
 } from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { useAuth } from '../../context/AuthContext';
+import { Link as RouterLink } from 'react-router-dom';
 
-const LoginForm = () => {
+const SignupForm = () => {
   const navigate = useNavigate();
-  const location = useLocation();
   const { setIsAuthenticated } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [formData, setFormData] = useState({
     email: '',
-    password: ''
+    password: '',
+    confirmPassword: ''
   });
   const [formErrors, setFormErrors] = useState({
     email: '',
-    password: ''
+    password: '',
+    confirmPassword: ''
   });
 
   const validateEmail = (email) => {
@@ -41,6 +43,12 @@ const LoginForm = () => {
     return '';
   };
 
+  const validateConfirmPassword = (confirmPassword, password) => {
+    if (!confirmPassword) return 'Please confirm your password';
+    if (confirmPassword !== password) return 'Passwords do not match';
+    return '';
+  };
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData(prev => ({
@@ -48,7 +56,6 @@ const LoginForm = () => {
       [name]: value
     }));
     
-    // Clear errors when user types
     setFormErrors(prev => ({
       ...prev,
       [name]: ''
@@ -61,11 +68,16 @@ const LoginForm = () => {
     // Validate form
     const emailError = validateEmail(formData.email);
     const passwordError = validatePassword(formData.password);
+    const confirmPasswordError = validateConfirmPassword(
+      formData.confirmPassword, 
+      formData.password
+    );
     
-    if (emailError || passwordError) {
+    if (emailError || passwordError || confirmPasswordError) {
       setFormErrors({
         email: emailError,
-        password: passwordError
+        password: passwordError,
+        confirmPassword: confirmPasswordError
       });
       return;
     }
@@ -74,28 +86,27 @@ const LoginForm = () => {
     setError('');
 
     try {
-      // TODO: Implement API call to /auth/login
-      const response = await fetch('http://localhost:5000/auth/login', {
+      const response = await fetch('http://localhost:5000/auth/register', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({
+          email: formData.email,
+          password: formData.password
+        }),
       });
 
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.error || 'Login failed');
+        throw new Error(data.error || 'Registration failed');
       }
 
       // Store token and update auth state
       localStorage.setItem('token', data.token);
       setIsAuthenticated(true);
-
-      // Redirect to previous page or dashboard
-      const from = location.state?.from?.pathname || '/dashboard';
-      navigate(from, { replace: true });
+      navigate('/dashboard');
     } catch (err) {
       setError(err.message);
     } finally {
@@ -119,7 +130,7 @@ const LoginForm = () => {
       }}
     >
       <Typography variant="h5" component="h1" gutterBottom textAlign="center">
-        Login to Planventure
+        Create Account
       </Typography>
 
       {error && (
@@ -167,6 +178,19 @@ const LoginForm = () => {
         }}
       />
 
+      <TextField
+        fullWidth
+        label="Confirm Password"
+        name="confirmPassword"
+        type={showPassword ? 'text' : 'password'}
+        value={formData.confirmPassword}
+        onChange={handleChange}
+        error={!!formErrors.confirmPassword}
+        helperText={formErrors.confirmPassword}
+        disabled={isLoading}
+        required
+      />
+
       <Button
         type="submit"
         variant="contained"
@@ -175,17 +199,17 @@ const LoginForm = () => {
         disabled={isLoading}
         sx={{ mt: 2 }}
       >
-        {isLoading ? 'Logging in...' : 'Login'}
+        {isLoading ? 'Creating Account...' : 'Sign Up'}
       </Button>
 
       <Typography variant="body2" textAlign="center" sx={{ mt: 2 }}>
-        Don't have an account?{' '}
-        <Button onClick={() => navigate('/signup')} stx={{ testTransform: 'none' }}>
-          Sign up
-        </Button>
+        Already have an account?{' '}
+        <RouterLink to="/login" style={{ textDecoration: 'none' }}>
+          Login
+        </RouterLink>
       </Typography>
     </Box>
   );
 };
 
-export default LoginForm;
+export default SignupForm;
