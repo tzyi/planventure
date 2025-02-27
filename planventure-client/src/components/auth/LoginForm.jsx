@@ -11,11 +11,12 @@ import {
 } from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { useAuth } from '../../context/AuthContext';
+import { api } from '../../services/api';
 
 const LoginForm = () => {
   const navigate = useNavigate();
   const location = useLocation();
-  const { setIsAuthenticated } = useAuth();
+  const { login, setIsAuthenticated } = useAuth();
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -74,25 +75,13 @@ const LoginForm = () => {
     setError('');
 
     try {
-      // TODO: Implement API call to /auth/login
-      const response = await fetch('http://localhost:5000/auth/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
-      });
+      const data = await api.auth.login(formData);
 
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.error || 'Login failed');
+      if(data.accessToken) {
+        login(data.accessToken);
+        setIsAuthenticated(true);
+        console.log('Login successful');
       }
-
-      // Store token and update auth state
-      localStorage.setItem('token', data.token);
-      setIsAuthenticated(true);
-
       // Redirect to previous page or dashboard
       const from = location.state?.from?.pathname || '/dashboard';
       navigate(from, { replace: true });

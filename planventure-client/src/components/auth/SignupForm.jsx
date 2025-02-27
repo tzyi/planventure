@@ -12,6 +12,7 @@ import {
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import { useAuth } from '../../context/AuthContext';
 import { Link as RouterLink } from 'react-router-dom';
+import { api } from '../../services/api';
 
 const SignupForm = () => {
   const navigate = useNavigate();
@@ -86,27 +87,18 @@ const SignupForm = () => {
     setError('');
 
     try {
-      const response = await fetch('http://localhost:5000/auth/register', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          email: formData.email,
-          password: formData.password
-        }),
-      });
+      const userData = {
+        email: formData.email,
+        password: formData.password
+      };
 
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.error || 'Registration failed');
+      const data = await api.auth.register(userData);
+      
+      if(data.accessToken) {
+        setIsAuthenticated(true);
+        navigate('/dashboard', { replace: true });
       }
-
-      // Store token and update auth state
-      localStorage.setItem('token', data.token);
-      setIsAuthenticated(true);
-      navigate('/dashboard');
+      
     } catch (err) {
       setError(err.message);
     } finally {
