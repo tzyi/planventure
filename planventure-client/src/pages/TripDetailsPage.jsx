@@ -145,8 +145,6 @@ const TripDetailsPage = () => {
         <Tabs value={tabValue} onChange={handleTabChange} sx={{ borderBottom: 1, borderColor: 'divider' }}>
           <Tab label="Overview" />
           <Tab label="Itinerary" />
-          <Tab label="Expenses" />
-          <Tab label="Notes" />
         </Tabs>
 
         <TabPanel value={tabValue} index={0}>
@@ -164,24 +162,6 @@ const TripDetailsPage = () => {
               Itinerary
             </Typography>
             {/* Add itinerary content */}
-          </Box>
-        </TabPanel>
-
-        <TabPanel value={tabValue} index={2}>
-          <Box>
-            <Typography variant="h6" gutterBottom>
-              Expenses
-            </Typography>
-            {/* Add expenses content */}
-          </Box>
-        </TabPanel>
-
-        <TabPanel value={tabValue} index={3}>
-          <Box>
-            <Typography variant="h6" gutterBottom>
-              Notes
-            </Typography>
-            {/* Add notes content */}
           </Box>
         </TabPanel>
       </Paper>
