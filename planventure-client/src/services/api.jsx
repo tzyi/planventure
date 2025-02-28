@@ -1,6 +1,20 @@
-const BASE_URL = import.meta.env.BASE_API_URL || 'http://localhost:5000';
+const BASE_URL = 'http://localhost:5000';
+
+const getAuthHeaders = () => {
+  const token = localStorage.getItem('token');
+  return {
+    'Content-Type': 'application/json',
+    'Authorization': token ? `Bearer ${token}` : '',
+  };
+};
 
 const handleResponse = async (response) => {
+  if (response.status === 401) {
+    localStorage.removeItem('token');
+    window.location.href = '/login';
+    throw new Error('Session expired. Please login again.');
+  }
+
   const data = await response.json();
   if (!response.ok) {
     throw new Error(data.error || 'Request failed');
@@ -9,24 +23,22 @@ const handleResponse = async (response) => {
 };
 
 export const api = {
-  // General purpose methods
   get: async (endpoint) => {
-    const response = await fetch(`${BASE_URL}${endpoint}`);
+    const response = await fetch(`${BASE_URL}${endpoint}`, {
+      headers: getAuthHeaders(),
+    });
     return handleResponse(response);
   },
   
   post: async (endpoint, data) => {
     const response = await fetch(`${BASE_URL}${endpoint}`, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
+      headers: getAuthHeaders(),
       body: JSON.stringify(data),
     });
     return handleResponse(response);
   },
 
-  // Auth specific methods
   auth: {
     login: async (credentials) => {
       return api.post('/auth/login', credentials);
