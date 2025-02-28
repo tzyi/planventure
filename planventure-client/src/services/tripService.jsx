@@ -28,10 +28,42 @@ export const tripService = {
 
   getTrip: async (tripId) => {
     try {
+      console.log('Fetching trip with ID:', tripId);
       const response = await api.get(`/api/trips/${tripId}`);
+      console.log('Raw trip response:', response);
+      
+      // If the response itself is the trip data
+      if (response && response.id) {
+        return { trip: response };
+      }
+      
+      // If the trip is nested in a data or trips property
+      if (response && (response.data || response.trips)) {
+        return { trip: response.data || response.trips };
+      }
+
+      throw new Error('Invalid response format from server');
+    } catch (error) {
+      console.error('Error in getTrip:', error);
+      throw new Error(error.message || 'Failed to fetch trip details');
+    }
+  },
+
+  updateTrip: async (tripId, tripData) => {
+    try {
+      const response = await api.put(`/api/trips/${tripId}`, tripData);
       return response.data;
     } catch (error) {
-      throw new Error(error.response?.data?.message || 'Failed to fetch trip');
+      throw new Error(error.response?.data?.message || 'Failed to update trip');
+    }
+  },
+
+  deleteTrip: async (tripId) => {
+    try {
+      const response = await api.delete(`/api/trips/${tripId}`);
+      return response.data;
+    } catch (error) {
+      throw new Error(error.response?.data?.message || 'Failed to delete trip');
     }
   }
 };

@@ -15,10 +15,16 @@ const handleResponse = async (response) => {
     throw new Error('Session expired. Please login again.');
   }
 
+  if (response.status === 404) {
+    throw new Error('Trip not found');
+  }
+
   const data = await response.json();
   if (!response.ok) {
-    throw new Error(data.error || 'Request failed');
+    throw new Error(data.error || data.message || 'Request failed');
   }
+
+  console.log('API Response:', data); // Debug log
   return data;
 };
 
