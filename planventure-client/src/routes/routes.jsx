@@ -3,6 +3,7 @@ import LoginPage from '../pages/LoginPage';
 import SignUpPage from '../pages/SignUpPage';
 import Dashboard from '../pages/Dashboard';
 import DashboardLayout from '../layouts/DashboardLayout';
+import NewTripPage from '../pages/NewTripPage';
 
 export const publicRoutes = [
   {
@@ -28,4 +29,8 @@ export const protectedRoutes = [
     path: '/trips',
     element: <DashboardLayout><Dashboard /></DashboardLayout>,
   },
+  {
+    path: '/trips/new',
+    element: <DashboardLayout><NewTripPage /></DashboardLayout>,
+  }
 ];
