@@ -75,18 +75,19 @@ const LoginForm = () => {
     setError('');
 
     try {
-      const data = await api.auth.login(formData);
+      const response = await api.auth.login(formData);
+      console.log('Login response:', response);
 
-      if(data.accessToken) {
-        login(data.accessToken);
-        setIsAuthenticated(true);
-        console.log('Login successful');
+      if (response.token) {
+        login(response); // Pass the entire response
+        console.log('Login successful, redirecting to dashboard...');
+        navigate('/dashboard', { replace: true });
+      } else {
+        setError('Invalid login response');
       }
-      // Redirect to previous page or dashboard
-      const from = location.state?.from?.pathname || '/dashboard';
-      navigate(from, { replace: true });
     } catch (err) {
-      setError(err.message);
+      console.error('Login error:', err);
+      setError(err.message || 'An error occurred during login');
     } finally {
       setIsLoading(false);
     }
