@@ -24,6 +24,10 @@ import dayjs from 'dayjs';
 import ItineraryDay from '../components/itinerary/ItineraryDay';
 import { generateTemplateForDate } from '../data/itineraryTemplates';
 import EmptyItinerary from '../components/itinerary/EmptyItinerary';
+import AccommodationCard from '../components/overview/AccommodationCard';
+import TransportationCard from '../components/overview/TransportationCard';
+import EmptyOverviewSection from '../components/overview/EmptyOverviewSection';
+import { Add as AddIcon } from '@mui/icons-material';
 
 const TabPanel = ({ children, value, index }) => (
   <div hidden={value !== index} style={{ padding: '24px 0' }}>
@@ -39,6 +43,8 @@ const TripDetailsPage = () => {
   const [error, setError] = useState(null);
   const [tabValue, setTabValue] = useState(0);
   const [itinerary, setItinerary] = useState({});
+  const [accommodations, setAccommodations] = useState([]);
+  const [transportation, setTransportation] = useState([]);
 
   useEffect(() => {
     const fetchTripDetails = async () => {
@@ -108,6 +114,31 @@ const TripDetailsPage = () => {
       return acc;
     }, {});
     setItinerary(templateItinerary);
+  };
+
+  const handleAddAccommodation = () => {
+    const newAccommodation = {
+      id: Date.now(),
+      name: '',
+      address: '',
+      checkIn: new Date().toISOString().slice(0, 16),
+      checkOut: new Date().toISOString().slice(0, 16),
+      bookingRef: ''
+    };
+    setAccommodations([...accommodations, newAccommodation]);
+  };
+
+  const handleAddTransportation = () => {
+    const newTransport = {
+      id: Date.now(),
+      type: 'flight',
+      from: '',
+      to: '',
+      departure: new Date().toISOString().slice(0, 16),
+      arrival: new Date().toISOString().slice(0, 16),
+      bookingRef: ''
+    };
+    setTransportation([...transportation, newTransport]);
   };
 
   if (loading) {
@@ -194,10 +225,79 @@ const TripDetailsPage = () => {
 
         <TabPanel value={tabValue} index={0}>
           <Box>
-            <Typography variant="h6" gutterBottom>
-              Trip Overview
-            </Typography>
-            {/* Add overview content */}
+            <Box sx={{ mb: 4 }}>
+              <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
+                <Typography variant="h6">Accommodations</Typography>
+                {accommodations.length > 0 && (
+                  <Button
+                    startIcon={<AddIcon />}
+                    onClick={handleAddAccommodation}
+                  >
+                    Add Accommodation
+                  </Button>
+                )}
+              </Box>
+              
+              {accommodations.length === 0 ? (
+                <EmptyOverviewSection
+                  title="Accommodations"
+                  description="Add details about where you'll be staying during your trip, including hotels, rentals, or other lodging arrangements."
+                  onAdd={handleAddAccommodation}
+                />
+              ) : (
+                accommodations.map(accommodation => (
+                  <AccommodationCard
+                    key={accommodation.id}
+                    accommodation={accommodation}
+                    onUpdate={(updated) => {
+                      setAccommodations(accommodations.map(acc =>
+                        acc.id === updated.id ? updated : acc
+                      ));
+                    }}
+                    onDelete={(id) => {
+                      setAccommodations(accommodations.filter(acc => acc.id !== id));
+                    }}
+                  />
+                ))
+              )}
+            </Box>
+
+            <Box>
+              <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
+                <Typography variant="h6">Transportation</Typography>
+                {transportation.length > 0 && (
+                  <Button
+                    startIcon={<AddIcon />}
+                    onClick={handleAddTransportation}
+                  >
+                    Add Transportation
+                  </Button>
+                )}
+              </Box>
+              
+              {transportation.length === 0 ? (
+                <EmptyOverviewSection
+                  title="Transportation"
+                  description="Add your travel arrangements including flights, trains, rental cars, or other modes of transportation."
+                  onAdd={handleAddTransportation}
+                />
+              ) : (
+                transportation.map(transport => (
+                  <TransportationCard
+                    key={transport.id}
+                    transport={transport}
+                    onUpdate={(updated) => {
+                      setTransportation(transportation.map(t =>
+                        t.id === updated.id ? updated : t
+                      ));
+                    }}
+                    onDelete={(id) => {
+                      setTransportation(transportation.filter(t => t.id !== id));
+                    }}
+                  />
+                ))
+              )}
+            </Box>
           </Box>
         </TabPanel>
 
