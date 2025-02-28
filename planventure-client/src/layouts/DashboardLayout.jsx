@@ -3,7 +3,8 @@ import {
   Box, 
   Drawer, 
   List, 
-  ListItem, 
+  ListItem,
+  ListItemButton, 
   ListItemIcon, 
   ListItemText, 
   IconButton,
@@ -63,8 +64,7 @@ const DashboardLayout = ({ children }) => {
       <Divider />
       <List>
         {menuItems.map((item) => (
-          <ListItem
-            button
+          <ListItemButton
             key={item.text}
             onClick={() => {
               navigate(item.path);
@@ -86,7 +86,7 @@ const DashboardLayout = ({ children }) => {
               {item.icon}
             </ListItemIcon>
             <ListItemText primary={item.text} />
-          </ListItem>
+          </ListItemButton>
         ))}
       </List>
     </Box>
