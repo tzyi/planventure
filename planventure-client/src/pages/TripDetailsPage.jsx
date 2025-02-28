@@ -21,6 +21,9 @@ import {
 } from '@mui/icons-material';
 import { tripService } from '../services/tripService';
 import dayjs from 'dayjs';
+import ItineraryDay from '../components/itinerary/ItineraryDay';
+import { generateTemplateForDate } from '../data/itineraryTemplates';
+import EmptyItinerary from '../components/itinerary/EmptyItinerary';
 
 const TabPanel = ({ children, value, index }) => (
   <div hidden={value !== index} style={{ padding: '24px 0' }}>
@@ -35,6 +38,7 @@ const TripDetailsPage = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [tabValue, setTabValue] = useState(0);
+  const [itinerary, setItinerary] = useState({});
 
   useEffect(() => {
     const fetchTripDetails = async () => {
@@ -63,6 +67,47 @@ const TripDetailsPage = () => {
 
   const handleTabChange = (event, newValue) => {
     setTabValue(newValue);
+  };
+
+  const handleAddSlot = (date, newSlot) => {
+    setItinerary(prev => ({
+      ...prev,
+      [date]: [...(prev[date] || []), newSlot]
+    }));
+  };
+
+  const handleUpdateSlot = (date, updatedSlot) => {
+    setItinerary(prev => ({
+      ...prev,
+      [date]: prev[date].map(slot => 
+        slot.id === updatedSlot.id ? updatedSlot : slot
+      )
+    }));
+  };
+
+  const handleDeleteSlot = (date, slotId) => {
+    setItinerary(prev => ({
+      ...prev,
+      [date]: prev[date].filter(slot => slot.id !== slotId)
+    }));
+  };
+
+  const handleCreateEmptyItinerary = () => {
+    const dates = getDatesArray(trip.start_date, trip.end_date);
+    const emptyItinerary = dates.reduce((acc, date) => {
+      acc[date] = [];
+      return acc;
+    }, {});
+    setItinerary(emptyItinerary);
+  };
+
+  const handleUseTemplate = () => {
+    const dates = getDatesArray(trip.start_date, trip.end_date);
+    const templateItinerary = dates.reduce((acc, date) => {
+      acc[date] = generateTemplateForDate(date);
+      return acc;
+    }, {});
+    setItinerary(templateItinerary);
   };
 
   if (loading) {
@@ -161,12 +206,42 @@ const TripDetailsPage = () => {
             <Typography variant="h6" gutterBottom>
               Itinerary
             </Typography>
-            {/* Add itinerary content */}
+            {Object.keys(itinerary).length === 0 ? (
+              <EmptyItinerary
+                onCreateEmpty={handleCreateEmptyItinerary}
+                onUseTemplate={handleUseTemplate}
+              />
+            ) : (
+              trip && getDatesArray(trip.start_date, trip.end_date).map(date => (
+                <ItineraryDay
+                  key={date}
+                  date={date}
+                  slots={itinerary[date] || []}
+                  onAddSlot={handleAddSlot}
+                  onUpdateSlot={handleUpdateSlot}
+                  onDeleteSlot={handleDeleteSlot}
+                />
+              ))
+            )}
           </Box>
         </TabPanel>
       </Paper>
     </Box>
   );
+};
+
+// Helper function to generate dates array
+const getDatesArray = (startDate, endDate) => {
+  const dates = [];
+  let currentDate = dayjs(startDate);
+  const lastDate = dayjs(endDate);
+
+  while (currentDate.isBefore(lastDate) || currentDate.isSame(lastDate, 'day')) {
+    dates.push(currentDate.format('YYYY-MM-DD'));
+    currentDate = currentDate.add(1, 'day');
+  }
+
+  return dates;
 };
 
 export default TripDetailsPage;

@@ -45,6 +45,15 @@ export const api = {
     return handleResponse(response);
   },
 
+  put: async (endpoint, data) => {
+    const response = await fetch(`${BASE_URL}${endpoint}`, {
+      method: 'PUT',
+      headers: getAuthHeaders(),
+      body: JSON.stringify(data),
+    });
+    return handleResponse(response);
+  },
+
   auth: {
     login: async (credentials) => {
       return api.post('/auth/login', credentials);

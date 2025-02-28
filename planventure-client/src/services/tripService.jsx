@@ -51,10 +51,13 @@ export const tripService = {
 
   updateTrip: async (tripId, tripData) => {
     try {
+      console.log('Updating trip:', tripId, tripData);
       const response = await api.put(`/api/trips/${tripId}`, tripData);
-      return response.data;
+      console.log('Update response:', response);
+      return response;
     } catch (error) {
-      throw new Error(error.response?.data?.message || 'Failed to update trip');
+      console.error('Error in updateTrip:', error);
+      throw new Error(error.message || 'Failed to update trip');
     }
   },
 
