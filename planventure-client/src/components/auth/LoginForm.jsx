@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { 
   Box, 
@@ -28,6 +28,21 @@ const LoginForm = () => {
     email: '',
     password: ''
   });
+
+  // Add state for success message
+  const [successMessage, setSuccessMessage] = useState(
+    location.state?.message || ''
+  );
+
+  // Pre-fill email if coming from signup
+  useEffect(() => {
+    if (location.state?.email) {
+      setFormData(prev => ({
+        ...prev,
+        email: location.state.email
+      }));
+    }
+  }, [location.state]);
 
   const validateEmail = (email) => {
     const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -111,6 +126,12 @@ const LoginForm = () => {
       <Typography variant="h5" component="h1" gutterBottom textAlign="center">
         Login to Planventure
       </Typography>
+
+      {successMessage && (
+        <Alert severity="success" sx={{ mb: 2 }}>
+          {successMessage}
+        </Alert>
+      )}
 
       {error && (
         <Alert severity="error" sx={{ mb: 2 }}>

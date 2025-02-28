@@ -92,15 +92,21 @@ const SignupForm = () => {
         password: formData.password
       };
 
-      const data = await api.auth.register(userData);
+      const response = await api.auth.register(userData);
+      console.log('Signup response:', response); // Debug log
       
-      if(data.accessToken) {
-        setIsAuthenticated(true);
-        navigate('/dashboard', { replace: true });
-      }
+      // Don't check for accessToken, just redirect after successful registration
+      navigate('/login', { 
+        replace: true,
+        state: { 
+          message: 'Registration successful! Please log in.',
+          email: formData.email
+        }
+      });
       
     } catch (err) {
-      setError(err.message);
+      console.error('Signup error:', err); // Debug log
+      setError(err.message || 'Registration failed. Please try again.');
     } finally {
       setIsLoading(false);
     }
