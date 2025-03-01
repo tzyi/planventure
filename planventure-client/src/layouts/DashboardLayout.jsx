@@ -120,7 +120,9 @@ const DashboardLayout = ({ children }) => {
             display: { xs: 'block', sm: 'none' },
             '& .MuiDrawer-paper': { 
               boxSizing: 'border-box', 
-              width: DRAWER_WIDTH 
+              width: DRAWER_WIDTH,
+              height: 'calc(100vh - 56px)', // Subtract footer height
+              marginTop: '64px' // Account for navbar
             },
           }}
         >
@@ -136,7 +138,9 @@ const DashboardLayout = ({ children }) => {
               boxSizing: 'border-box', 
               width: DRAWER_WIDTH,
               borderRight: '1px solid rgba(0, 0, 0, 0.12)',
-              marginTop: '64px'
+              marginTop: '64px', // Navbar height
+              height: 'calc(100vh - 78px - 58px)', // Subtract navbar (64px) and footer (56px) heights
+              overflowY: 'auto' // Add scrolling for overflow content
             },
           }}
           open
