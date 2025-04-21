@@ -7,9 +7,9 @@ A Flask-based REST API backend for the Planventure application.
 ## Prerequisites
 Before you begin, ensure you have the following:
 
-- A GitHub account
+- A GitHub account - [sign up for FREE](https://github.com)
 - Access to GitHub Copilot - [sign up for FREE](https://gh.io/gfb-copilot)!
-- A Code Editor
+- A Code Editor - [VS Code](https://code.visualstudio.com/download) is recommended
 - API Client (like [Bruno](https://github.com/usebruno/bruno))
 - Git - [Download & Install Git](https://git-scm.com/downloads)
 
@@ -23,7 +23,7 @@ Before you begin, ensure you have the following:
 
 If you prefer to develop locally, follow the steps below:
 
-1. Clone the repository and navigate to the [planventue-api](/planventure-api/) directory:
+1.Fork and clone the repository and navigate to the [planventue-api](/planventure-api/) directory:
 ```sh
 cd planventure-api
 ```
@@ -48,10 +48,6 @@ cp .sample.env .env
 ```sh
 flask run
 ```
-
-## Docker Setup
-
-If bulding locally, follow the Docker setup steps in the [DockerSetup](DockerSetup) file.
 
 ## 📚 API Endpoints
 - GET / - Welcome message
