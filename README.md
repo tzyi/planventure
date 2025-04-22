@@ -1,13 +1,28 @@
-# Walkthrough Template
+# Build with Me + GitHub Copilot 🚀
 
-This repository serves as a template for creating a walkthrough. Follow the steps below to get started.
+You can build along with me in this [Youtube video]() or read this [blog post]().
 
-## Getting Started
+![Build with Me + GitHub Copilot on Youtube](link-to-image)
+![Build with Me + GitHub Copilot on the Blog](link-to-image)
 
-1. Clone this repository.
-2. Update the documentation in the `docs` folder (including the `README.md` folder).
-3. Customize the code and other content as needed.
-4. Update the `SUPPORT.md` file with the appropriate information.
-5. Review the default LICENSE (MIT), CODE_OF_CONDUCT, and CONTRIBUTING files to ensure they meet your needs. These use the samples provided as part of the OSPO release process.
-6. Update the `README.md` file in the repository root with the appropriate information. You can find an example at [github-samples/game-of-life-walkthrough](https://github.com/github-samples/game-of-life-walkthrough).
-7. When you are ready to publish the repository, please make sure that the Git history is clean. Then, raise an issue for a 'sample release' at [https://github.com/github/open-source-releases](https://github.com/github/open-source-releases).
+# Planventure API 🚁
+A Flask-based REST API backend for the Planventure application.
+
+## Prerequisites
+Before you begin, ensure you have the following:
+
+- A GitHub account - [sign up for FREE](https://github.com)
+- Access to GitHub Copilot - [sign up for FREE](https://gh.io/gfb-copilot)!
+- A Code Editor - [VS Code](https://code.visualstudio.com/download) is recommended
+- API Client (like [Bruno](https://github.com/usebruno/bruno))
+- Git - [Download & Install Git](https://git-scm.com/downloads)
+
+## 🚀 Getting Started
+
+1. Fork this repository to your GitHub account.
+2. Switch to the `api-start` branch.
+3. Clone the repository to your local machine.
+
+You can find next steps in the README on the `api-start` branch.
+
+Happy Coding!  🎉
