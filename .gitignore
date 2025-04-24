@@ -2,6 +2,7 @@
 # Bruno adds a dir to your vscode workspace
 Planventure
 __pycache__
+.DS_Store
 
 # Add the .gitignore from https://github.com/github/gitignore/blob/main/Python.gitignore
 # Byte-compiled / optimized / DLL files
