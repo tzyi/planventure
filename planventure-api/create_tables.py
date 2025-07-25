@@ -1,5 +1,6 @@
 from sqlalchemy import create_engine
 from models.user import Base
+from models.trip import Trip  # 新增這行，確保 Trip 被註冊
 
 # 這裡使用 SQLite，路徑與 .env 相同
 engine = create_engine('sqlite:///./planventure.db')
