@@ -1,12 +1,17 @@
 
 from flask import Flask, jsonify
 from flask_cors import CORS
+from flasgger import Swagger
 import os
 from models import db  # 導入我們的 db 實例
 from routes.auth import auth_bp
+from config.swagger_config import SWAGGER_CONFIG, SWAGGER_TEMPLATE
 
 app = Flask(__name__)
 CORS(app)
+
+# 初始化 Swagger
+swagger = Swagger(app, config=SWAGGER_CONFIG, template=SWAGGER_TEMPLATE)
 
 # 基本 SQLAlchemy 設定
 db_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'instance', 'planventure.db')
@@ -24,10 +29,40 @@ app.register_blueprint(auth_bp, url_prefix='/auth')
 
 @app.route('/')
 def home():
+    """
+    歡迎頁面
+    ---
+    tags:
+      - General
+    responses:
+      200:
+        description: 歡迎訊息
+        schema:
+          type: object
+          properties:
+            message:
+              type: string
+              example: "Welcome to PlanVenture API"
+    """
     return jsonify({"message": "Welcome to PlanVenture API"})
 
 @app.route('/health')
 def health_check():
+    """
+    健康檢查端點
+    ---
+    tags:
+      - General
+    responses:
+      200:
+        description: 應用程式健康狀態
+        schema:
+          type: object
+          properties:
+            status:
+              type: string
+              example: "healthy"
+    """
     return jsonify({"status": "healthy"})
 
 if __name__ == '__main__':
