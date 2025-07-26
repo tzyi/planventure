@@ -43,16 +43,19 @@ python create_tables.py
 python app.py
 ```
 
-應用程式將在 `http://localhost:5000` 啟動。
+
+應用程式將在 `http://localhost:5001` 啟動。
 
 ## API 文檔
+
 
 ### Swagger UI
 
 啟動應用程式後，可以訪問以下網址查看互動式 API 文檔：
 
-- **Swagger UI**: http://localhost:5000/swagger/
-- **OpenAPI JSON**: http://localhost:5000/apispec_1.json
+- **Swagger UI**: http://localhost:5001/apidocs/
+- **OpenAPI JSON**: http://localhost:5001/apispec_1.json
+
 
 ### 可用端點
 
@@ -63,6 +66,59 @@ python app.py
 #### 一般端點
 - `GET /` - 歡迎訊息
 - `GET /health` - 健康檢查
+
+#### 行程 (Trip) 相關
+- `POST /api/trips` - 創建行程
+- `GET /api/trips` - 取得所有行程
+- `GET /api/trips/<trip_id>` - 取得單一行程
+- `PUT /api/trips/<trip_id>` - 更新行程
+- `DELETE /api/trips/<trip_id>` - 刪除行程
+## Trip API 使用說明
+
+### 認證
+所有 Trip 端點皆需 JWT Token，請於 header 加入：
+
+```
+Authorization: Bearer <your-jwt-token>
+```
+
+### 主要端點範例
+
+- **創建行程**：
+  - `POST /api/trips`
+  - 必填：destination, start_date, end_date (YYYY-MM-DD)
+  - 可選：coordinates, itinerary (JSON)
+
+- **取得所有行程**：
+  - `GET /api/trips`
+
+- **取得單一行程**：
+  - `GET /api/trips/<trip_id>`
+
+- **更新行程**：
+  - `PUT /api/trips/<trip_id>`
+
+- **刪除行程**：
+  - `DELETE /api/trips/<trip_id>`
+
+### 回應格式與錯誤處理
+
+- 400 Bad Request：欄位缺漏或格式錯誤
+- 401 Unauthorized：Token 無效或過期
+- 404 Not Found：找不到行程
+- 200/201：操作成功
+
+### 測試
+
+可直接執行 `test_trip_api.py` 進行自動化測試：
+
+```bash
+python test_trip_api.py
+```
+
+### 更完整的 Trip API 文件
+
+請參考 `TRIP_API_DOCS.md` 取得所有欄位、範例與 curl/python 調用方式。
 
 ### 認證方式
 
