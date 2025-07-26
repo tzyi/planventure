@@ -10,6 +10,11 @@ from config.swagger_config import SWAGGER_CONFIG, SWAGGER_TEMPLATE
 from config.cors_config import get_cors_config
 
 app = Flask(__name__)
+app.config['SWAGGER'] = {
+  'uiversion': 3,
+  'swagger_ui': True,
+  'specs_route': '/apidocs/'
+}
 
 # CORS 配置 - 針對 React 前端優化
 CORS(app, **get_cors_config())
@@ -100,4 +105,4 @@ def cors_test():
     })
 
 if __name__ == '__main__':
-    app.run(debug=True, port=5001)
+    app.run(debug=True, port=5000)

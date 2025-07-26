@@ -27,8 +27,8 @@ fi
 
 # 啟動應用程式
 echo "🌟 啟動 Flask API (按 Ctrl+C 停止)..."
-echo "📍 API 將在 http://localhost:5001 運行"
-echo "📄 API 文件: http://localhost:5001/apidocs"
+echo "📍 API 將在 http://localhost:5000 運行"
+echo "📄 API 文件: http://localhost:5000/apidocs"
 echo ""
 
 python app.py

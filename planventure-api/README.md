@@ -73,7 +73,7 @@ python app.py
 ```
 
 
-應用程式將在 `http://localhost:5001` 啟動。
+應用程式將在 `http://localhost:5000` 啟動。
 
 ## API 文檔
 
@@ -82,8 +82,8 @@ python app.py
 
 啟動應用程式後，可以訪問以下網址查看互動式 API 文檔：
 
-- **Swagger UI**: http://localhost:5001/apidocs/
-- **OpenAPI JSON**: http://localhost:5001/apispec_1.json
+- **Swagger UI**: http://localhost:5000/apidocs/
+- **OpenAPI JSON**: http://localhost:5000/apispec_1.json
 
 
 ### 可用端點
