@@ -126,7 +126,7 @@ planventure/
 
 > Swagger api文件 : http://localhost:5000/apidocs/
 
-![](./img/edit.png)
+![](./img/swagger.png)
 
 ---
 
