@@ -7,9 +7,12 @@ from models import db  # 導入我們的 db 實例
 from routes.auth import auth_bp
 from routes.protected import protected_bp
 from config.swagger_config import SWAGGER_CONFIG, SWAGGER_TEMPLATE
+from config.cors_config import get_cors_config
 
 app = Flask(__name__)
-CORS(app)
+
+# CORS 配置 - 針對 React 前端優化
+CORS(app, **get_cors_config())
 
 # 初始化 Swagger
 swagger = Swagger(app, config=SWAGGER_CONFIG, template=SWAGGER_TEMPLATE)
@@ -69,6 +72,32 @@ def health_check():
               example: "healthy"
     """
     return jsonify({"status": "healthy"})
+
+@app.route('/cors-test')
+def cors_test():
+    """
+    CORS 配置測試端點
+    ---
+    tags:
+      - General
+    responses:
+      200:
+        description: CORS 配置測試回應
+        schema:
+          type: object
+          properties:
+            message:
+              type: string
+              example: "CORS is working correctly"
+            cors_enabled:
+              type: boolean
+              example: true
+    """
+    return jsonify({
+        "message": "CORS is working correctly",
+        "cors_enabled": True,
+        "timestamp": "2025-07-26"
+    })
 
 if __name__ == '__main__':
     app.run(debug=True, port=5001)

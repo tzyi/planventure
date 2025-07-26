@@ -17,3 +17,6 @@ flask-migrate==4.0.5
 # API documentation
 flasgger==0.9.7.1
 flask-swagger-ui==4.11.1
+
+# Testing dependencies
+requests==2.31.0

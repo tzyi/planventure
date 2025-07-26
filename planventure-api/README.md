@@ -8,11 +8,17 @@
 - JWT Token 驗證
 - 自動化 API 文檔（Swagger/OpenAPI）
 - 資料庫 ORM（SQLAlchemy）
-- CORS 跨域支援
+- **CORS 跨域支援（已配置用於 React 前端）**
+- 完整的旅行管理 API
 
 ## 快速開始
 
-### 環境設定
+### 🚀 一鍵啟動
+```bash
+./start.sh
+```
+
+### 手動設定
 
 1. 創建虛擬環境：
 ```bash
@@ -28,6 +34,29 @@ pip install -r requirements.txt
 ```
 
 3. 環境變數設定：
+```bash
+cp .env.example .env
+# 編輯 .env 檔案設定您的配置
+```
+
+4. 啟動 API：
+```bash
+python app.py
+```
+
+## 🌐 CORS 配置
+
+本 API 已完整配置 CORS 以支援 React 前端，詳細說明請參考 [CORS_SETUP.md](CORS_SETUP.md)。
+
+### 支援的前端 URL（開發環境）:
+- `http://localhost:3000` (Create React App)
+- `http://localhost:5173` (Vite)
+- `http://localhost:3001` (備用端口)
+
+### 測試 CORS 配置:
+```bash
+python test_cors.py
+```
 複製 `.sample.env` 為 `.env` 並根據需要修改設定。
 
 ### 資料庫設定
