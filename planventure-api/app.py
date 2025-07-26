@@ -5,6 +5,7 @@ from flasgger import Swagger
 import os
 from models import db  # 導入我們的 db 實例
 from routes.auth import auth_bp
+from routes.protected import protected_bp
 from config.swagger_config import SWAGGER_CONFIG, SWAGGER_TEMPLATE
 
 app = Flask(__name__)
@@ -25,7 +26,9 @@ db.init_app(app)
 from models import User, Trip
 
 # Blueprints
+
 app.register_blueprint(auth_bp, url_prefix='/auth')
+app.register_blueprint(protected_bp)
 
 @app.route('/')
 def home():
